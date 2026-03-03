@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Futurist's Matrix — HumanMark™</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #06070d;
+    --bg2: #0c0e1a;
+    --fg: #e8e8f0;
+    --accent: #6366f1;
+    --accent2: #22d3ee;
+    --accent3: #f59e0b;
+    --red: #f87171;
+    --green: #4ade80;
+    --purple: #a855f7;
+    --blue: #3b82f6;
+    --dim: #6b7280;
+    --card-bg: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.07);
+    --gradient-1: linear-gradient(135deg, #6366f1, #8b5cf6);
+    --gradient-2: linear-gradient(135deg, #22d3ee, #06b6d4);
+    --gradient-3: linear-gradient(135deg, #f59e0b, #ef4444);
+    --gradient-4: linear-gradient(135deg, #22c55e, #10b981);
+  }
+
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── Slide Container ─── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3.5rem 5vw;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(99,102,241,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 85%, rgba(34,211,238,0.05) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  /* ─── Slide Number ─── */
+  .slide-number {
+    position: absolute;
+    top: 1.8rem;
+    right: 2.5rem;
+    font-size: .75rem;
+    color: var(--dim);
+    font-weight: 600;
+    letter-spacing: .12em;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* ─── Typography ─── */
+  h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+
+  .mega-title {
+    font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.12;
+    max-width: 54rem;
+  }
+  .hl1 { background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hl2 { background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hl3 { background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hl4 { background: var(--gradient-4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .subtitle { font-size: 1.1rem; color: var(--dim); margin-top: .8rem; max-width: 42rem; }
+
+  h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 700; margin-bottom: 1.2rem; }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: .4rem; color: var(--accent2); }
+
+  /* ─── Tags ─── */
+  .tag { display: inline-block; padding: .15rem .55rem; border-radius: .35rem; font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; }
+  .t-fast { background: rgba(239,68,68,0.12); color: #f87171; }
+  .t-urban { background: rgba(34,211,238,0.12); color: #22d3ee; }
+  .t-tribal { background: rgba(168,85,247,0.12); color: #a855f7; }
+  .t-universal { background: rgba(59,130,246,0.12); color: #3b82f6; }
+  .t-radical { background: rgba(245,158,11,0.12); color: #f59e0b; }
+  .t-ethical { background: rgba(34,197,94,0.12); color: #22c55e; }
+  .t-wild { background: rgba(245,158,11,0.18); color: #fbbf24; }
+
+  /* ─── Matrix Table ─── */
+  .matrix-wrap {
+    overflow-x: auto;
+    border-radius: .8rem;
+    border: 1px solid var(--card-border);
+    margin-top: 1rem;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+  thead th {
+    background: rgba(99,102,241,0.12);
+    color: var(--accent2);
+    padding: .6rem .7rem;
+    text-align: left;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-size: .65rem;
+    white-space: nowrap;
+    border-bottom: 2px solid rgba(99,102,241,0.25);
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  thead th:first-child {
+    width: 6.5rem;
+    min-width: 6.5rem;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: rgba(99,102,241,0.2);
+  }
+  tbody td {
+    padding: .55rem .65rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+    color: #a8a8bc;
+    line-height: 1.45;
+  }
+  tbody td:first-child {
+    font-weight: 700;
+    color: var(--fg);
+    white-space: nowrap;
+    position: sticky;
+    left: 0;
+    background: var(--bg);
+    z-index: 1;
+  }
+  tbody tr:hover td { background: rgba(99,102,241,0.03); }
+  tbody tr:hover td:first-child { background: rgba(99,102,241,0.06); }
+  .row-wild td { background: rgba(245,158,11,0.04) !important; }
+  .row-wild td:first-child { color: var(--accent3); background: rgba(245,158,11,0.08) !important; }
+
+  /* ─── Cards ─── */
+  .card-grid { display: grid; gap: 1.1rem; margin-top: 1.2rem; }
+  .card-grid.c2 { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
+  .card-grid.c3 { grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  .card-grid.c4 { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: .8rem;
+    padding: 1.3rem;
+    transition: transform .2s, border-color .2s;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card .label {
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: .35rem;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .card p, .card li { font-size: .88rem; color: #b0b0c4; }
+
+  /* ─── From → To Rows ─── */
+  .ft-row {
+    display: flex;
+    align-items: stretch;
+    border-radius: .7rem;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    margin-bottom: .8rem;
+  }
+  .ft-label {
+    flex: 0 0 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .85rem;
+    background: rgba(99,102,241,0.08);
+    text-align: center;
+    padding: .8rem .5rem;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .ft-from, .ft-to { flex: 1; padding: .9rem 1.1rem; }
+  .ft-from { background: rgba(239,68,68,0.04); }
+  .ft-to { background: rgba(34,197,94,0.04); }
+  .ft-arrow {
+    flex: 0 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--accent2);
+  }
+  .ft-h { font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; margin-bottom: .25rem; font-weight: 600; }
+  .ft-from .ft-h { color: var(--red); }
+  .ft-to .ft-h { color: var(--green); }
+  .ft-from p, .ft-to p { font-size: .85rem; color: #b8b8cc; }
+
+  /* ─── Convergence Box ─── */
+  .cvg {
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(34,211,238,0.06));
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: .8rem;
+    padding: 1.6rem 2rem;
+    margin: 1.2rem 0;
+    text-align: center;
+  }
+  .cvg .big {
+    font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* ─── Pillar Cards ─── */
+  .pillar {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: .8rem;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .pillar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .pillar.p1::before { background: var(--gradient-1); }
+  .pillar.p2::before { background: var(--gradient-2); }
+  .pillar.p3::before { background: var(--gradient-3); }
+  .pillar.p4::before { background: var(--gradient-4); }
+  .pillar .ico { font-size: 1.8rem; margin-bottom: .5rem; display: block; }
+  .pillar h3 { color: var(--fg); margin-bottom: .5rem; }
+  .pillar p { font-size: .84rem; color: #a0a0b8; }
+  .pillar ul { font-size: .82rem; color: #a0a0b8; padding-left: 1.1rem; margin-top: .4rem; }
+  .pillar ul li { margin-bottom: .25rem; }
+
+  /* ─── Navigation Dots ─── */
+  .nav {
+    position: fixed;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    z-index: 100;
+  }
+  .nav a {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    display: block;
+    transition: background .2s, transform .2s;
+    text-decoration: none;
+    position: relative;
+  }
+  .nav a:hover, .nav a.active { background: var(--accent); transform: scale(1.5); }
+  .nav a::after {
+    content: attr(data-label);
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .6rem;
+    color: var(--fg);
+    background: rgba(0,0,0,.85);
+    padding: .15rem .5rem;
+    border-radius: .3rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .nav a:hover::after { opacity: 1; }
+
+  /* ─── Keyboard Help ─── */
+  .kb {
+    position: fixed;
+    bottom: 1.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: .65rem;
+    color: var(--dim);
+    background: rgba(0,0,0,.6);
+    padding: .25rem .7rem;
+    border-radius: .4rem;
+    z-index: 100;
+    opacity: .5;
+  }
+
+  /* ─── References ─── */
+  .refs { columns: 2; column-gap: 2rem; font-size: .78rem; color: #777; }
+  .refs li { margin-bottom: .2rem; break-inside: avoid; }
+
+  /* ─── Animations ─── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(1.5rem); } to { opacity:1; transform:translateY(0); } }
+  .anim { animation: fadeUp .5s ease-out both; }
+
+  /* ─── Print ─── */
+  @media print {
+    .slide { min-height: auto; page-break-after: always; padding: 1.5rem; }
+    .nav, .kb { display: none; }
+    body { background: #fff; color: #111; }
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 768px) {
+    .slide { padding: 2rem 1.2rem; }
+    .ft-row { flex-direction: column; }
+    .ft-label { flex: none; padding: .6rem; }
+    .ft-arrow { transform: rotate(90deg); flex: none; padding: .2rem; }
+    .refs { columns: 1; }
+  }
+
+  /* ─── Section label ─── */
+  .section-badge {
+    display: inline-block;
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    color: var(--accent);
+    font-weight: 700;
+    border: 1px solid rgba(99,102,241,0.3);
+    padding: .2rem .7rem;
+    border-radius: .3rem;
+    margin-bottom: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav class="nav" id="nav"></nav>
+<div class="kb">← → or ↑ ↓ to navigate &nbsp;|&nbsp; Scroll to browse</div>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 1 — TITLE                                           ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s1">
+  <span class="slide-number">01 / 12</span>
+  <div class="section-badge">MEG/BME404 · Technology Innovation</div>
+  <h1 class="mega-title anim">
+    The <span class="hl3">Authenticity Crisis</span>:<br>
+    When AI Can Be <em>Anyone</em>,<br>
+    <span class="hl2">Proving You're Human</span><br>
+    Becomes <span class="hl1">Priceless</span>
+  </h1>
+  <p class="subtitle" style="margin-top:1.5rem;">
+    The Futurist's Matrix — Synthesizing Trends to Uncover Invention &amp; Innovation Opportunities
+  </p>
+  <p style="margin-top:1.5rem; font-size:.85rem; color:var(--dim);">
+    March 2026
+  </p>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 2 — TWO FRAMEWORKS                                  ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s2">
+  <span class="slide-number">02 / 12</span>
+  <div class="section-badge">Frameworks</div>
+  <h2>Two Frameworks, <span style="color:var(--accent)">One Lens</span></h2>
+
+  <div class="card-grid c2">
+    <div class="card">
+      <div class="label">Patrick Dixon — "The Future of Everything"</div>
+      <h3 style="color:var(--fg)">Six Faces of the Future</h3>
+      <p>Six forces shaping our world:</p>
+      <div style="display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.7rem;">
+        <span class="tag t-fast">Fast</span>
+        <span class="tag t-urban">Urban</span>
+        <span class="tag t-tribal">Tribal</span>
+        <span class="tag t-universal">Universal</span>
+        <span class="tag t-radical">Radical</span>
+        <span class="tag t-ethical">Ethical</span>
+      </div>
+      <p style="margin-top:.7rem; font-size:.78rem; color:#666;">+ Wild Cards &amp; Joker Events (high impact, low probability)</p>
+    </div>
+    <div class="card">
+      <div class="label">Peter Skarzynski — Market Discontinuities</div>
+      <h3 style="color:var(--fg)">Seven Discontinuity Categories</h3>
+      <p>Sources of seismic market shifts:</p>
+      <ul style="margin-top:.5rem; padding-left:1.1rem; font-size:.88rem; color:#a8a8bc;">
+        <li><strong>Lifestyles</strong> — How people live, work, consume</li>
+        <li><strong>Technology</strong> — Tools, platforms, scientific breakthroughs</li>
+        <li><strong>Demographics &amp; Socio-economics</strong> — Population, wealth, education</li>
+        <li><strong>Geopolitics</strong> — Power, trade, conflict, regulation</li>
+        <li><strong>Values</strong> — Beliefs, ethics, social norms</li>
+        <li><strong>Religion</strong> — Faith, spirituality, moral frameworks</li>
+        <li><strong>Industry</strong> — Sector-specific disruptions, business models</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cvg" style="margin-top:1.5rem;">
+    <p class="big">Our Mission: <span style="color:var(--accent2)">Map the intersection</span> of these 7 × 7 cells to uncover a hidden <strong>"story"</strong></p>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 3 — MATRIX PART 1 (Fast, Urban, Tribal)             ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s3">
+  <span class="slide-number">03 / 12</span>
+  <div class="section-badge">Step I — Trend Synthesis Matrix</div>
+  <h2>Matrix <span style="color:var(--dim); font-size:.55em">(Part 1: Fast · Urban · Tribal)</span></h2>
+
+  <div class="matrix-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Lifestyles</th>
+          <th>Technology</th>
+          <th>Demographics &amp; Socio-economics</th>
+          <th>Geopolitics</th>
+          <th>Values</th>
+          <th>Religion</th>
+          <th>Industry</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- FAST -->
+        <tr>
+          <td><span class="tag t-fast">Fast</span></td>
+          <td>Instant gratification; micro-content dominates</td>
+          <td>AI generates content in seconds; real-time deepfakes</td>
+          <td>Digital divide: tech-savvy youth vs. excluded elderly</td>
+          <td>Flash crashes; disinformation outpaces diplomacy</td>
+          <td>Speed over depth; counter-trend: slow living</td>
+          <td>Micro-spirituality apps replace traditional practice</td>
+          <td>Product life-cycles compressed; AI floods markets</td>
+        </tr>
+        <!-- URBAN -->
+        <tr>
+          <td><span class="tag t-urban">Urban</span></td>
+          <td>Micro-living; co-living; 15-minute city model</td>
+          <td>Smart-city IoT; autonomous delivery; digital twins</td>
+          <td>70% urban by 2050; loneliness epidemic in cities</td>
+          <td>Cities compete for talent; cyber-targets grow</td>
+          <td>Craving belonging; ownership → access shift</td>
+          <td>Houses of worship as last physical gathering spaces</td>
+          <td>PropTech booming; last-mile logistics race</td>
+        </tr>
+        <!-- TRIBAL -->
+        <tr>
+          <td><span class="tag t-tribal">Tribal</span></td>
+          <td>"Made by Humans" = new premium branding</td>
+          <td>Algorithms deepen echo chambers; neo-Luddites emerge</td>
+          <td>Institutional trust at historic lows (Edelman 2025)</td>
+          <td>Digital nationalism; walled ecosystems (EU, CN)</td>
+          <td>Values-based consumption; authenticity over perfection</td>
+          <td>Online faith tribes reinforced by algorithms</td>
+          <td>Niche DTC brands; community-owned platforms (DAOs)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 4 — MATRIX PART 2 (Universal, Radical, Ethical)      ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s4">
+  <span class="slide-number">04 / 12</span>
+  <div class="section-badge">Step I — Trend Synthesis Matrix</div>
+  <h2>Matrix <span style="color:var(--dim); font-size:.55em">(Part 2: Universal · Radical · Ethical)</span></h2>
+
+  <div class="matrix-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Lifestyles</th>
+          <th>Technology</th>
+          <th>Demographics &amp; Socio-economics</th>
+          <th>Geopolitics</th>
+          <th>Values</th>
+          <th>Religion</th>
+          <th>Industry</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- UNIVERSAL -->
+        <tr>
+          <td><span class="tag t-universal">Universal</span></td>
+          <td>Subscription model goes global; shared pop culture</td>
+          <td>AI translation removes language barriers; open-source AI</td>
+          <td>Global mental health crisis; aging populations; climate migration</td>
+          <td>US–China–EU AI arms race; no data governance</td>
+          <td>Privacy as threatened universal right</td>
+          <td>AI raises "Can machines have souls?" debate</td>
+          <td>Platform giants as universal infrastructure; global fintech</td>
+        </tr>
+        <!-- RADICAL -->
+        <tr>
+          <td><span class="tag t-radical">Radical</span></td>
+          <td>AI companions replace human relationships; digital immortality</td>
+          <td>AGI enters corporate strategy; brain-computer interfaces</td>
+          <td>Post-truth era; reality contested via deepfakes</td>
+          <td>Cyberwarfare primary conflict mode; autonomous weapons</td>
+          <td><strong>"What is real? Who can I trust?"</strong></td>
+          <td>"Playing God" debate; transhumanism as quasi-religion</td>
+          <td>Fully AI-generated startups; zero-human supply chains</td>
+        </tr>
+        <!-- ETHICAL -->
+        <tr>
+          <td><span class="tag t-ethical">Ethical</span></td>
+          <td>Right to disconnect; "Was this made by AI?"</td>
+          <td>AI bias scandals; massive carbon cost of training</td>
+          <td>Consent fatigue; surveillance capitalism backlash</td>
+          <td>ESG reshapes capital ($30T+); tech colonialism concerns</td>
+          <td><strong>Demand for ethical AI certification</strong></td>
+          <td>Vatican "Rome Call for AI Ethics"; faith-based stewardship</td>
+          <td>EU AI Act (2024); algorithmic accountability laws emerge</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 5 — MATRIX PART 3 (Wild Cards)                      ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s5">
+  <span class="slide-number">05 / 12</span>
+  <div class="section-badge">Step I — Wild Cards &amp; Joker Events</div>
+  <h2>Wild Cards <span style="color:var(--accent3)">⚡</span> <span style="color:var(--dim); font-size:.55em">(High Impact, Low Probability)</span></h2>
+
+  <div class="matrix-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Lifestyles</th>
+          <th>Technology</th>
+          <th>Demographics &amp; Socio-economics</th>
+          <th>Geopolitics</th>
+          <th>Values</th>
+          <th>Religion</th>
+          <th>Industry</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-wild">
+          <td><span class="tag t-wild">Wild Cards</span></td>
+          <td>Tech addiction declared global epidemic; neo-Luddite exodus</td>
+          <td>AI consciousness breakthrough; solar superstorm; quantum cracks encryption</td>
+          <td>Pandemic 2.0 forces permanent remote-AI reliance</td>
+          <td>Complete "Splinternet"; autonomous weapons engage unsanctioned</td>
+          <td>Election deepfake crisis shatters public trust</td>
+          <td>AI-generated religion gains millions of followers</td>
+          <td>Human creativity seen as economically valueless</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cvg" style="margin-top:2rem; border-color: rgba(245,158,11,0.4);">
+    <p style="font-size:.78rem; color:var(--accent3); margin-bottom:.4rem; text-transform:uppercase; letter-spacing:.12em;">Key Wild Card Amplifier</p>
+    <p class="big" style="font-size:1.1rem;">A major <span style="color:var(--accent3)">deepfake crisis</span> in an election or financial market → demand for <strong>verified authenticity</strong> spikes from preference to <span style="color:var(--red)">urgent necessity</span> overnight</p>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 6 — FROM → TO TABLE                                 ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s6">
+  <span class="slide-number">06 / 12</span>
+  <div class="section-badge">Step II — Disruptive Discontinuities</div>
+  <h2>From… <span style="color:var(--accent2)">→</span> To… Table</h2>
+
+  <div class="ft-row">
+    <div class="ft-label">Lifestyles</div>
+    <div class="ft-from"><div class="ft-h">From…</div><p>Ownership-based; human relationships as emotional core</p></div>
+    <div class="ft-arrow">→</div>
+    <div class="ft-to"><div class="ft-h">To…</div><p>Subscription-based; AI companions normalized</p></div>
+  </div>
+
+  <div class="ft-row">
+    <div class="ft-label">Technology</div>
+    <div class="ft-from"><div class="ft-h">From…</div><p>AI = expert tool; human content is the default</p></div>
+    <div class="ft-arrow">→</div>
+    <div class="ft-to"><div class="ft-h">To…</div><p>AI = co-creator everywhere; human vs. machine indistinguishable</p></div>
+  </div>
+
+  <div class="ft-row">
+    <div class="ft-label" style="font-size:.75rem">Demographics &amp; Socio-econ</div>
+    <div class="ft-from"><div class="ft-h">From…</div><p>Digital divide = access gap; job = identity</p></div>
+    <div class="ft-arrow">→</div>
+    <div class="ft-to"><div class="ft-h">To…</div><p>AI literacy gap; identity = community &amp; values</p></div>
+  </div>
+
+  <div class="ft-row">
+    <div class="ft-label">Geopolitics</div>
+    <div class="ft-from"><div class="ft-h">From…</div><p>Physical borders; data as byproduct</p></div>
+    <div class="ft-arrow">→</div>
+    <div class="ft-to"><div class="ft-h">To…</div><p>Digital borders; data = primary strategic asset</p></div>
+  </div>
+
+  <div class="ft-row" style="border-color: rgba(245,158,11,0.35);">
+    <div class="ft-label" style="background:rgba(245,158,11,0.12); color:var(--accent3);">🔑 Values</div>
+    <div class="ft-from"><div class="ft-h">From…</div><p>Authenticity <strong>assumed</strong>; "seeing is believing"</p></div>
+    <div class="ft-arrow" style="color:var(--accent3);">→</div>
+    <div class="ft-to"><div class="ft-h">To…</div><p>Authenticity must be <strong>proven</strong>; verified provenance required</p></div>
+  </div>
+
+  <div class="ft-row">
+    <div class="ft-label">Religion</div>
+    <div class="ft-from"><div class="ft-h">From…</div><p>Organized religion; physical congregation</p></div>
+    <div class="ft-arrow">→</div>
+    <div class="ft-to"><div class="ft-h">To…</div><p>Personalized spirituality; digital congregations</p></div>
+  </div>
+
+  <div class="ft-row">
+    <div class="ft-label">Industry</div>
+    <div class="ft-from"><div class="ft-h">From…</div><p>Human-made products; self-regulation accepted</p></div>
+    <div class="ft-arrow">→</div>
+    <div class="ft-to"><div class="ft-h">To…</div><p>AI-made products; third-party verification demanded</p></div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 7 — INTERSECTION                                    ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s7">
+  <span class="slide-number">07 / 12</span>
+  <div class="section-badge">Step III — The Intersection</div>
+  <h2>Chasing the Intersection Between Trends</h2>
+
+  <div class="card-grid c2" style="margin-bottom:1.5rem;">
+    <div class="card" style="border-left: 3px solid var(--red);">
+      <div class="label" style="color:var(--red);">Fast × Technology</div>
+      <p>AI creates indistinguishable synthetic content <strong>instantly</strong> — deepfakes are consumer-grade.</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--purple);">
+      <div class="label" style="color:var(--purple);">Tribal × Values</div>
+      <p>Trust in reality is <strong>collapsing</strong> — authenticity becomes the highest tribal value.</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--blue);">
+      <div class="label" style="color:var(--blue);">Universal × Demographics</div>
+      <p>Hyper-connected yet <strong>lonelier than ever</strong> — artificial interactions worsen mental health.</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--green);">
+      <div class="label" style="color:var(--green);">Ethical × Industry</div>
+      <p>Consumers ask <strong>"Was this made by AI?"</strong> — but no certification system exists yet.</p>
+    </div>
+  </div>
+
+  <div style="display:flex; align-items:center; justify-content:center; gap:.8rem; margin:1.2rem 0; flex-wrap:wrap;">
+    <span class="tag t-fast" style="font-size:.75rem; padding:.25rem .7rem;">Fast × Tech</span>
+    <span style="color:var(--dim); font-size:1.3rem;">+</span>
+    <span class="tag t-tribal" style="font-size:.75rem; padding:.25rem .7rem;">Tribal × Values</span>
+    <span style="color:var(--dim); font-size:1.3rem;">+</span>
+    <span class="tag t-universal" style="font-size:.75rem; padding:.25rem .7rem;">Universal × Demo</span>
+    <span style="color:var(--dim); font-size:1.3rem;">+</span>
+    <span class="tag t-ethical" style="font-size:.75rem; padding:.25rem .7rem;">Ethical × Industry</span>
+  </div>
+
+  <div style="text-align:center; font-size:2rem; color:var(--accent2); margin:.6rem 0;">▼</div>
+
+  <div class="cvg">
+    <p style="font-size:.7rem; color:var(--dim); letter-spacing:.15em; text-transform:uppercase; margin-bottom:.5rem;">The Bigger Story Emerges</p>
+    <p class="big" style="font-size:1.4rem;"><span class="hl3">The Authenticity Crisis</span></p>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 8 — THE STORY                                       ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s8">
+  <span class="slide-number">08 / 12</span>
+  <div class="section-badge" style="border-color: rgba(245,158,11,0.4); color:var(--accent3);">The "Aha!" Moment</div>
+
+  <div style="text-align:center; max-width:50rem; margin:0 auto;">
+    <h1 class="mega-title" style="text-align:center; font-size:clamp(1.8rem,3.5vw,3rem);">
+      <span class="hl3">The Authenticity Crisis</span>
+    </h1>
+
+    <p style="font-size:1.05rem; color:#b0b0c4; margin-top:1.5rem; line-height:1.85; max-width:44rem; margin-left:auto; margin-right:auto;">
+      AI output is now <strong style="color:var(--fg)">indistinguishable from human-created content</strong>.<br>
+      The most valuable commodity of the next decade:
+    </p>
+
+    <p style="margin-top:1.3rem;">
+      <span style="font-size:clamp(1.5rem,2.8vw,2.2rem); font-weight:900; font-family:'Space Grotesk',sans-serif; background:var(--gradient-2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
+        Verified Human Authenticity
+      </span>
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(10rem,1fr)); gap:.8rem; margin-top:1.8rem; font-size:.85rem; color:#888; text-align:center;">
+      <div style="background:rgba(239,68,68,0.05); padding:.7rem; border-radius:.5rem;">🚫 Can't trust what you <strong style="color:var(--fg)">see</strong></div>
+      <div style="background:rgba(239,68,68,0.05); padding:.7rem; border-radius:.5rem;">🚫 Can't trust what you <strong style="color:var(--fg)">hear</strong></div>
+      <div style="background:rgba(239,68,68,0.05); padding:.7rem; border-radius:.5rem;">🚫 Can't trust what you <strong style="color:var(--fg)">read</strong></div>
+      <div style="background:rgba(239,68,68,0.05); padding:.7rem; border-radius:.5rem;">🚫 Can't trust who you <strong style="color:var(--fg)">talk to</strong></div>
+    </div>
+
+    <div class="cvg" style="margin-top:2rem;">
+      <p style="font-size:.9rem; color:#999;">2000s: Social isolation → <span style="color:var(--accent2); font-weight:700;">Social Networking</span></p>
+      <p class="big" style="font-size:1.15rem; margin-top:.6rem;">2020s: Authenticity Crisis → <span class="hl2">Human Authenticity Ecosystem</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 9 — THE IDEA                                        ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s9">
+  <span class="slide-number">09 / 12</span>
+  <div class="section-badge" style="border-color: rgba(99,102,241,0.5);">Creative Idea</div>
+  <h2 style="text-align:center;">
+    Introducing <span class="hl1">HumanMark™</span>
+  </h2>
+  <p style="text-align:center; color:var(--dim); margin-bottom:2rem; font-size:1rem;">
+    The Global Standard for Verified Human Authenticity — <em>"Fair Trade" for the AI Age</em>
+  </p>
+
+  <div class="card-grid c2">
+    <div class="pillar p1">
+      <span class="ico">🎨</span>
+      <h3>HumanMark Create</h3>
+      <p><strong>Content Certification</strong></p>
+      <ul>
+        <li>Browser plugin records <strong>creation-process metadata</strong> (typing rhythm, cursor patterns)</li>
+        <li>Generates <strong>cryptographic proof of human creation</strong></li>
+        <li>Works for text, image, music, video &amp; code</li>
+      </ul>
+    </div>
+    <div class="pillar p2">
+      <span class="ico">🤝</span>
+      <h3>HumanMark Connect</h3>
+      <p><strong>Verified Human Interactions</strong></p>
+      <ul>
+        <li>Every account <strong>biometrically verified</strong> as a real person</li>
+        <li>"HumanMark Verified" badge on all interactions</li>
+        <li>For dating, professional networking &amp; peer support</li>
+      </ul>
+    </div>
+    <div class="pillar p3">
+      <span class="ico">🏷️</span>
+      <h3>HumanMark Label</h3>
+      <p><strong>Product Certification</strong></p>
+      <ul>
+        <li>"Fair Trade"-style label for <strong>human-made</strong> goods</li>
+        <li>Blockchain-tracked from creation to consumer</li>
+        <li>Commands a premium for verified craftsmanship</li>
+      </ul>
+    </div>
+    <div class="pillar p4">
+      <span class="ico">💰</span>
+      <h3>HumanMark Market</h3>
+      <p><strong>Authenticity Marketplace</strong></p>
+      <ul>
+        <li>Curated marketplace for <strong>certified human-made</strong> goods only</li>
+        <li>Creators earn premium; buyers get guaranteed authenticity</li>
+        <li>"Human-made Etsy" — provenance IS the product</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 10 — WHY IT WORKS                                   ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s10">
+  <span class="slide-number">10 / 12</span>
+  <div class="section-badge">Validation</div>
+  <h2>Why It Works — Mapped to Dixon's Six Faces</h2>
+
+  <div class="matrix-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:8rem;">Dixon Face</th><th>How HumanMark Responds</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag t-fast">Fast</span></td>
+          <td><strong>Instant verification</strong> — scan QR or click badge, zero friction</td>
+        </tr>
+        <tr>
+          <td><span class="tag t-urban">Urban</span></td>
+          <td>Verified-human social spaces combat <strong>urban loneliness</strong></td>
+        </tr>
+        <tr>
+          <td><span class="tag t-tribal">Tribal</span></td>
+          <td>"I'm HumanMark verified" = new <strong>tribe of authenticity</strong></td>
+        </tr>
+        <tr>
+          <td><span class="tag t-universal">Universal</span></td>
+          <td><strong>Global, language-agnostic</strong> — authenticity needs no translation</td>
+        </tr>
+        <tr>
+          <td><span class="tag t-radical">Radical</span></td>
+          <td><strong>Paradigm shift</strong>: from assuming authenticity to proving it</td>
+        </tr>
+        <tr>
+          <td><span class="tag t-ethical">Ethical</span></td>
+          <td>Gives consumers the <strong>right to know</strong>; empowers human creators</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:1.8rem; color:var(--accent3);">Revenue Model</h3>
+  <div class="card-grid c4" style="margin-top:.7rem;">
+    <div class="card" style="text-align:center; padding:.9rem;">
+      <p style="font-size:.68rem; color:var(--dim); text-transform:uppercase; letter-spacing:.08em;">Freemium</p>
+      <p style="font-size:.85rem; margin-top:.3rem;">Creator certification<br>(free tier + premium)</p>
+    </div>
+    <div class="card" style="text-align:center; padding:.9rem;">
+      <p style="font-size:.68rem; color:var(--dim); text-transform:uppercase; letter-spacing:.08em;">Enterprise</p>
+      <p style="font-size:.85rem; margin-top:.3rem;">Licensing for brands,<br>media &amp; platforms</p>
+    </div>
+    <div class="card" style="text-align:center; padding:.9rem;">
+      <p style="font-size:.68rem; color:var(--dim); text-transform:uppercase; letter-spacing:.08em;">Marketplace</p>
+      <p style="font-size:.85rem; margin-top:.3rem;">Transaction commission<br>on HumanMark Market</p>
+    </div>
+    <div class="card" style="text-align:center; padding:.9rem;">
+      <p style="font-size:.68rem; color:var(--dim); text-transform:uppercase; letter-spacing:.08em;">B2B API</p>
+      <p style="font-size:.85rem; margin-top:.3rem;">Integration for dating,<br>news, e-commerce apps</p>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 11 — AI TOOL USAGE                                  ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s11">
+  <span class="slide-number">11 / 12</span>
+  <div class="section-badge">Evaluation Criteria</div>
+  <h2>How We Used <span style="color:var(--accent)">AI Tools</span></h2>
+
+  <div class="card-grid c2">
+    <div class="card">
+      <div class="label">Tool Used</div>
+      <h3 style="color:var(--fg)">GitHub Copilot (Claude Opus 4.6)</h3>
+      <p>AI assistant in VS Code — research synthesis &amp; content generation</p>
+    </div>
+    <div class="card">
+      <div class="label">Key Prompts</div>
+      <h3 style="color:var(--fg)">How We Prompted</h3>
+      <ul style="padding-left:1.1rem; margin-top:.5rem;">
+        <li>"Synthesize Dixon × Skarzynski around AI vs. human authenticity"</li>
+        <li>"Fill 7×7 matrix with sourced trends for 2025–2030"</li>
+        <li>"Identify intersections → bigger story → innovation idea"</li>
+      </ul>
+    </div>
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="label">Human + AI Process</div>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:.5rem;">
+        <div style="flex:1; min-width:10rem;">
+          <h3 style="font-size:.88rem; color:var(--accent3);">1. Human Direction</h3>
+          <p style="font-size:.82rem;">Theme, matrix structure, constraints</p>
+        </div>
+        <div style="flex:1; min-width:10rem;">
+          <h3 style="font-size:.88rem; color:var(--accent3);">2. AI Research</h3>
+          <p style="font-size:.82rem;">Populated cells, identified patterns</p>
+        </div>
+        <div style="flex:1; min-width:10rem;">
+          <h3 style="font-size:.88rem; color:var(--accent3);">3. Human Synthesis</h3>
+          <p style="font-size:.82rem;">Refined story, designed HumanMark pillars</p>
+        </div>
+        <div style="flex:1; min-width:10rem;">
+          <h3 style="font-size:.88rem; color:var(--accent3);">4. AI Output</h3>
+          <p style="font-size:.82rem;">Generated presentation, team reviewed</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  SLIDE 12 — Q&A & REFERENCES                               ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<section class="slide" id="s12">
+  <span class="slide-number">12 / 12</span>
+
+  <div style="text-align:center; margin-bottom:2.5rem;">
+    <h1 class="mega-title" style="text-align:center; font-size:clamp(2rem,4vw,3.2rem);">
+      <span class="hl2">Challenge Our Assumptions</span>
+    </h1>
+    <p class="subtitle" style="margin:.8rem auto; text-align:center;">Q&amp;A — We welcome your questions and critiques</p>
+  </div>
+
+  <h3 style="margin-bottom:.8rem; color:var(--fg);">References</h3>
+  <ol class="refs" style="padding-left:1.5rem;">
+    <li>Dixon, P. (2015). <em>The Future of Almost Everything.</em> Profile Books.</li>
+    <li>Skarzynski, P. &amp; Gibson, R. (2008). <em>Innovation to the Core.</em> Harvard Business Press.</li>
+    <li>Edelman Trust Barometer 2025. <span style="color:#555;">edelman.com/trust</span></li>
+    <li>United Nations, Dept. of Economic and Social Affairs. <em>World Urbanization Prospects 2024.</em></li>
+    <li>European Union. <em>EU Artificial Intelligence Act</em> (Regulation 2024/1689).</li>
+    <li>Microsoft / Statista. "Attention Span Statistics 2024."</li>
+    <li>World Health Organization. <em>World Mental Health Report 2024.</em></li>
+    <li>Strubell, E., Ganesh, A., &amp; McCallum, A. (2019). "Energy and Policy Considerations for Deep Learning in NLP." <em>ACL 2019.</em></li>
+    <li>OpenAI, Anthropic, Google DeepMind — public model cards &amp; safety reports (2024–2025).</li>
+    <li>Vatican. "Rome Call for AI Ethics" (2020, renewed 2024). <span style="color:#555;">romecall.org</span></li>
+    <li>Replika, Character.ai — public usage statistics (2025).</li>
+  </ol>
+
+  <div class="card" style="margin-top:1.5rem; border-color:var(--accent);">
+    <div class="label">AI Tool Declaration</div>
+    <p><strong>GitHub Copilot (Claude Opus 4.6)</strong> was used to brainstorm trend intersections, populate the 7×7 matrix, structure the From→To table, and generate the presentation format. All prompts, constraints, and the human review process are documented on Slide 11. The creative idea (HumanMark™) was co-developed between the team and AI assistance.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+// Build navigation dots
+const slides = document.querySelectorAll('.slide');
+const nav = document.getElementById('nav');
+const labels = ['Title','Frameworks','Matrix 1','Matrix 2','Wild Cards','From→To','Intersection','Story','Idea','Validation','AI Usage','Q&A'];
+slides.forEach((s, i) => {
+  const a = document.createElement('a');
+  a.href = '#s' + (i + 1);
+  a.title = labels[i] || 'Slide ' + (i+1);
+  a.setAttribute('data-label', labels[i] || 'Slide '+(i+1));
+  nav.appendChild(a);
+});
+
+// Highlight active dot
+const dots = nav.querySelectorAll('a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = Array.from(slides).indexOf(e.target);
+      dots.forEach(d => d.classList.remove('active'));
+      if (dots[idx]) dots[idx].classList.add('active');
+    }
+  });
+}, { threshold: 0.35 });
+slides.forEach(s => obs.observe(s));
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  const cur = Array.from(dots).findIndex(d => d.classList.contains('active'));
+  if ((e.key==='ArrowDown'||e.key==='ArrowRight') && cur < slides.length-1) {
+    e.preventDefault(); slides[cur+1].scrollIntoView({behavior:'smooth'});
+  } else if ((e.key==='ArrowUp'||e.key==='ArrowLeft') && cur > 0) {
+    e.preventDefault(); slides[cur-1].scrollIntoView({behavior:'smooth'});
+  }
+});
+</script>
+</body>
+</html>
